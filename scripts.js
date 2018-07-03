@@ -6,6 +6,16 @@ properties:
 - cart
 */
 
+function Store () {
+  this.inventory = new Inventory();
+  this.items = new Set();
+  this.cart = new Cart();
+}
+
+Store.prototype.addItem = function (name, quantity) {
+
+};
+
 /*
 Inventory Class
 properties:
@@ -17,15 +27,47 @@ methods:
 - getItemInventory
 */
 
+function Inventory () {
+  this.store = {};
+}
+
+Inventory.prototype.addItem = function (name, quantity) {
+
+};
+
+Inventory.prototype.remove = function (quantity) {
+
+};
+
+Inventory.prototype.replenish = function (quantity) {
+
+};
+
+Inventory.prototype.getItemInventory = function (name); {
+
+};
+
 /*
 Item class
 properties:
 - name
-- price
+- priceInCents
 - details
 - pictureUrl
-- quantity
+methods:
+- getDisplayPrice
 */
+
+function Item (name, priceInCents, details, pictureUrl) {
+  this.name = name;
+  this.priceInCents = priceInCents;
+  this.details = details;
+  this.pictureUrl = pictureUrl;
+}
+
+Item.prototype.getDisplayPrice = function () {
+
+};
 
 function renderItems (items, inventory) {
 
@@ -42,6 +84,30 @@ methods:
 - getTotal
 - getItemCount
 */
+
+function Cart () {
+  this.items = [];
+}
+
+Cart.prototype.addItem = function (item, quantity) {
+
+};
+
+Cart.prototype.save = function () {
+
+};
+
+Cart.prototype.load = function () {
+
+};
+
+Cart.prototype.getTotal = function () {
+
+};
+
+Cart.prototype.getItemCount = function () {
+
+};
 
 function renderCart (cart) {
 
