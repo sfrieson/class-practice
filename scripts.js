@@ -1,11 +1,20 @@
 /*
-ItemInventory Class
+Store class
 properties:
-- _store (map, key: item.name, value: int)
+- items
+- inventory
+- cart
+*/
+
+/*
+Inventory Class
+properties:
+- store (map, key: item.name, value: int)
 methods:
 - addItem
 - remove
 - replenish
+- getItemInventory
 */
 
 /*
@@ -27,10 +36,11 @@ Cart class
 properties:
 - items
 methods:
-- add
+- addItem
 - save
 - load
 - getTotal
+- getItemCount
 */
 
 function renderCart (cart) {
