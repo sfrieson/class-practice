@@ -16,11 +16,52 @@
   <h1>Welcome to the Produce Stand</h1>
   <section>
     <h2>Here are todays offerings</h2>
-    <div id="items"></div>
+    <ul id="items" class='shop'>
+      <!--
+        Item class
+          properties:
+          - name
+          - priceInCents
+          - details
+          - pictureUrl
+          methods:
+          - getInventory
+          - getDisplayPrice
+        */
+      -->
+      <li class='item'>
+        <h3 id='item.name' class='item__name'>Name</h3>
+        <span id='item.price' class='item__price'>$12.99</span>
+        <p id='item.description' class='item__description'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit ab, est, possimus ipsam minus dolorem laudantium, maiores maxime sequi itaque veritatis! Repellendus sed architecto consequuntur nisi quibusdam ratione. Perspiciatis, sequi.</p>
+        <img id='item.pictureUrl' class='item__image' />
+      </li>
+    </ul>
   </section>
   <section>
-    <h2>Here is what's in your basket so far</h2>
-    <div id="basket"></div>
+    <h2>Here is what's in your basket</h2>
+    <!--
+    Cart class
+    properties:
+    - items
+    methods:
+    - addItem
+    - save
+    - load
+    - getTotal
+    - getItemCount
+  -->
+    <ol id="basket" class='basket'>
+      <li class='item'>
+        <h3 id='item.name' class='item__name'>Name</h3>
+        <span id='item.price' class='item__price'>$12.99</span>
+        <img id='item.pictureUrl' class='item__image' />
+        <button class='remove-item'>Remove</button>
+      </li>
+    </ol>
+    <div class='basket__details'>
+      <p id='basket.getTotal' class='basket__total'></p>
+      <p id='basket.getItemCount' class='basket__size'></p>
+    </div>
     <button id="checkout-button">Checkout</button>
   </section>
   <script src="/scripts.js" charset="utf-8"></script>
