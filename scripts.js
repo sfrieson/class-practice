@@ -8,18 +8,19 @@ properties:
 
 function Shop () {
   this.inventory = new Inventory();
-  this.cart = new Cart();
+  this.items = {};
 }
 
 Shop.prototype.addItem = function (name, priceInCents, details, pictureUrl, quantity) {
   var item = new Item(name, priceInCents, details, pictureUrl);
-  this.inventory.addItem(item, quantity);
+  this.items[name] = item;
+  this.inventory.addItem(name, quantity);
 };
 
 /*
 Inventory Class
 properties:
-- store (map, key: item.name, value: int)
+- storage (map, key: item.name, value: int)
 methods:
 - addItem
 - remove
@@ -31,20 +32,20 @@ function Inventory () {
   this.storage = {};
 }
 
-Inventory.prototype.addItem = function (item, quantity) {
-
+Inventory.prototype.addItem = function (name, quantity) {
+  this.storage[name] = quantity;
 };
 
-Inventory.prototype.remove = function (quantity) {
-
+Inventory.prototype.remove = function (name, quantity) {
+  this.storage[name] -= quantity;
 };
 
-Inventory.prototype.replenish = function (quantity) {
-
+Inventory.prototype.replenish = function (name, quantity) {
+  this.storage[name] += quantity;
 };
 
 Inventory.prototype.getItemInventory = function (name) {
-
+  return this.storage[name];
 };
 
 /*
@@ -66,7 +67,7 @@ function Item (name, priceInCents, details, pictureUrl) {
 }
 
 Item.prototype.getDisplayPrice = function () {
-
+  return '$' + this.priceInCents / 100;
 };
 
 function renderItems (items, inventory) {
@@ -79,18 +80,28 @@ properties:
 - items
 methods:
 - addItem
+- removeItem
 - save
 - load
 - getTotal
 - getItemCount
 */
 
-function Cart () {
-  this.items = [];
+function Cart (shop) {
+  this.shop = shop;
+  this.cartItems = [];
 }
 
 Cart.prototype.addItem = function (item, quantity) {
+  this.cartItems.push({item: item, quantity: quantity});
+};
 
+Cart.prototype.removeItem = function (item) {
+  for (let x = 0; x < this.cartItems.length; x++) {
+    if (this.cartItems[x] === item) {
+      this.cartItems.splice(x, 1);
+    }
+  }
 };
 
 Cart.prototype.save = function () {
@@ -102,11 +113,17 @@ Cart.prototype.load = function () {
 };
 
 Cart.prototype.getTotal = function () {
-
+  return this.cartItems.reduce(function (sum, cartItem) {
+    sum += cartItem.item.priceInCents;
+    return sum;
+  }, 0);
 };
 
 Cart.prototype.getItemCount = function () {
-
+  return this.cartItems.reduce(function (count, cartItem) {
+    count += cartItem.quantity;
+    return count;
+  }, 0);
 };
 
 function renderCart (cart) {
