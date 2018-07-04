@@ -153,8 +153,13 @@ UI class
     - formatPriceString
 */
 
-function UI (shopItemListId, cartItemListId, basketDetailsButton, buyButtonId, shop, cart) {
-
+function UI (shopItemListId, cartItemListId, basketDetails, buyButtonId, shop, cart) {
+  this.shopList = UI.DOMquery('#' + shopItemListId);
+  this.cartList = UI.DOMquery('#' + cartItemListId);
+  this.basketDetails = UI.DOMquery('#' + basketDetails);
+  this.buyButton = UI.DOMquery('#' + buyButtonId);
+  this.shop = shop;
+  this.cart = cart;
 }
 
 UI.prototype.render = function () {
@@ -163,32 +168,51 @@ UI.prototype.render = function () {
 };
 
 UI.prototype.renderShopItems = function () {
-  /*
-    <li class='item'>
-      <h3 id='item.name' class='item__name'>Name</h3>
-      <span id='item.price' class='item__price'>$12.99</span>
-      <p id='item.details' class='item__details'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit ab, est, possimus ipsam minus dolorem laudantium, maiores maxime sequi itaque veritatis! Repellendus sed architecto consequuntur nisi quibusdam ratione. Perspiciatis, sequi.</p>
-      <img id='item.pictureUrl' class='item__image' alt='item.name' />
-      <button class='item__add-button'>Add to cart</button>
-    </li>
-  */
+  this.shopList.empty();
+  for (let itemKey in this.shop.items) {
+    const item = this.shop.items[itemKey];
+    const itemEl = UI.DOMquery(`
+      <li class='item'>
+        <h3 class='item__name'>${item.name}</h3>
+        <span class='item__price'>${UI.formatPriceString(item.priceInCents)}</span>
+        <p class='item__details'>${item.details}</p>
+        <img class='item__image' alt='${item.name}' src='/img/${item.pictureUrl}' />
+      </li>
+      `);
+    const buttonEl = UI.DOMquery('<button class="item__add-button">Add to cart</button>');
+    buttonEl.click( () => {
+      this.cart.addItem(item, 1);
+      this.render();
+    });
+    itemEl.append(buttonEl);
+    this.shopList.append(itemEl);
+  }
 };
 
 UI.prototype.renderCartItems = function () {
-  /*
-    <li class='item'>
-      <h3 id='item.name' class='item__name'>Name</h3>
-      <span id='item.price' class='item__price'>$12.99</span>
-      <img id='item.pictureUrl' class='item__image' alt='item.name' />
-      <button class='remove-item'>Remove</button>
-    </li>
-  */
+  this.cartList.empty();
+  for (let cartItem of this.cart.cartItems) {
+    const itemEl = UI.DOMquery(`
+      <li class='item'>
+        <h3 class='item__name'>${cartItem.item.name}</h3>
+        <span class='item__price'>${UI.formatPriceString(cartItem.item.priceInCents)}</span>
+        <img class='item__image' alt='${cartItem.item.name}' src='/img/${cartItem.item.pictureUrl}' />
+      </li>
+      `);
+    const buttonEl = UI.DOMquery('<button class="remove-item">Remove</button>');
+    buttonEl.click(() => {
+      this.cart.removeItem(cartItem);
+      this.render();
+    });
+    itemEl.append(buttonEl);
+    this.cartList.append(itemEl);
+  }
 };
 
 UI.DOMquery = $; // eslint-disable-line
 
 UI.formatPriceString = function (priceInCents) {
-  return '$' + priceInCents / 100;
+  return '$' + (priceInCents / 100).toFixed(2);
 };
 
 // TODO Remove these globals later. They're for debugging
@@ -198,7 +222,8 @@ var cart;
 (function init () {
   shop = new Shop();
 
-  shop.addItem('avocado', 100, 'Hass', 'avocados.jpg', 10);
+  shop.addItem('avocado', 100, 'Buttery Hass avocados direct from California. Perfect for all your guacamole, salad, smoothie, and sandwich needs.', 'avocados.jpg', 10);
+  shop.addItem('leek', 150, '***Organic!*** Locally grown leeks are in-season and ready for you to buy them!', 'leek.jpg', 25);
   cart = new Cart(shop);
 
   var ui = new UI('items', 'basket', 'basket-details', 'checkout-button', shop, cart);
