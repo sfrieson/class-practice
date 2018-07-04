@@ -1,3 +1,7 @@
+function getDisplayPrice (priceInCents) {
+  return '$' + priceInCents / 100;
+};
+
 /*
 Shop class
 properties:
@@ -15,6 +19,10 @@ Shop.prototype.addItem = function (name, priceInCents, details, pictureUrl, quan
   var item = new Item(name, priceInCents, details, pictureUrl);
   this.items[name] = item;
   this.inventory.addItem(name, quantity);
+};
+
+Shop.prototype.getItemInventory = function (name) {
+  return this.inventory.getItemInventory(name);
 };
 
 /*
@@ -66,10 +74,6 @@ function Item (name, priceInCents, details, pictureUrl) {
   this.pictureUrl = pictureUrl;
 }
 
-Item.prototype.getDisplayPrice = function () {
-  return '$' + this.priceInCents / 100;
-};
-
 function renderItems (items, inventory) {
 
 }
@@ -93,7 +97,12 @@ function Cart (shop) {
 }
 
 Cart.prototype.addItem = function (item, quantity) {
-  this.cartItems.push({item: item, quantity: quantity});
+  const quantityInStock = this.shop.getItemInventory(item.name);
+  if (quantity <= quantityInStock) {
+    this.cartItems.push({item: item, quantity: quantity});
+  } else {
+    alert(`The shop only has ${quantityInStock} in stock`)
+  }
 };
 
 Cart.prototype.removeItem = function (item) {
@@ -124,6 +133,13 @@ Cart.prototype.getItemCount = function () {
     count += cartItem.quantity;
     return count;
   }, 0);
+};
+
+Cart.prototype.purchase = function () {
+  for (let cartItem of this.cartItems) {
+    this.shop.inventory.remove(cartItem.name, cartItem.quantity);
+  }
+  this.cartItems = [];
 };
 
 function renderCart (cart) {
