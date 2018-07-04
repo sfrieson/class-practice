@@ -1,13 +1,9 @@
-function getDisplayPrice (priceInCents) {
-  return '$' + priceInCents / 100;
-};
-
 /*
 Shop class
-properties:
-- items
-- inventory
-- cart
+  instance properties:
+    - items
+    - inventory
+    - cart
 */
 
 function Shop () {
@@ -27,13 +23,13 @@ Shop.prototype.getItemInventory = function (name) {
 
 /*
 Inventory Class
-properties:
-- storage (map, key: item.name, value: int)
-methods:
-- addItem
-- remove
-- replenish
-- getItemInventory
+  instance properties:
+    - storage (map, key: item.name, value: int)
+  instance methods:
+    - addItem
+    - remove
+    - replenish
+    - getItemInventory
 */
 
 function Inventory () {
@@ -58,13 +54,13 @@ Inventory.prototype.getItemInventory = function (name) {
 
 /*
 Item class
-properties:
-- name
-- priceInCents
-- details
-- pictureUrl
-methods:
-- getDisplayPrice
+  instance properties:
+    - name
+    - priceInCents
+    - details
+    - pictureUrl
+  instance methods:
+    - getDisplayPrice
 */
 
 function Item (name, priceInCents, details, pictureUrl) {
@@ -74,21 +70,17 @@ function Item (name, priceInCents, details, pictureUrl) {
   this.pictureUrl = pictureUrl;
 }
 
-function renderItems (items, inventory) {
-
-}
-
 /*
 Cart class
-properties:
-- items
-methods:
-- addItem
-- removeItem
-- save
-- load
-- getTotal
-- getItemCount
+  instance properties:
+    - items
+  instance methods:
+    - addItem
+    - removeItem
+    - save
+    - load
+    - getTotal
+    - getItemCount
 */
 
 function Cart (shop) {
@@ -101,7 +93,7 @@ Cart.prototype.addItem = function (item, quantity) {
   if (quantity <= quantityInStock) {
     this.cartItems.push({item: item, quantity: quantity});
   } else {
-    alert(`The shop only has ${quantityInStock} in stock`)
+    window.alert(`The shop only has ${quantityInStock} in stock`);
   }
 };
 
@@ -142,10 +134,73 @@ Cart.prototype.purchase = function () {
   this.cartItems = [];
 };
 
-function renderCart (cart) {
+/*
+UI class
+  instance properties:
+    - shop
+    - cart
+    - shopListEl
+    - cartListEl
+    - basketDetailsButtonEl
+    - buyButtonEl
+  instance methods:
+    - render
+    - renderCartItems
+    - renderShopItems
+  class properties:
+    - DOMquery (jQuery)
+  class methods:
+    - formatPriceString
+*/
+
+function UI (shopItemListId, cartItemListId, basketDetailsButton, buyButtonId, shop, cart) {
 
 }
 
-// Needed for initial render when the page is loaded.
-renderItems();
-renderCart();
+UI.prototype.render = function () {
+  this.renderShopItems();
+  this.renderCartItems();
+};
+
+UI.prototype.renderShopItems = function () {
+  /*
+    <li class='item'>
+      <h3 id='item.name' class='item__name'>Name</h3>
+      <span id='item.price' class='item__price'>$12.99</span>
+      <p id='item.details' class='item__details'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit ab, est, possimus ipsam minus dolorem laudantium, maiores maxime sequi itaque veritatis! Repellendus sed architecto consequuntur nisi quibusdam ratione. Perspiciatis, sequi.</p>
+      <img id='item.pictureUrl' class='item__image' alt='item.name' />
+      <button class='item__add-button'>Add to cart</button>
+    </li>
+  */
+};
+
+UI.prototype.renderCartItems = function () {
+  /*
+    <li class='item'>
+      <h3 id='item.name' class='item__name'>Name</h3>
+      <span id='item.price' class='item__price'>$12.99</span>
+      <img id='item.pictureUrl' class='item__image' alt='item.name' />
+      <button class='remove-item'>Remove</button>
+    </li>
+  */
+};
+
+UI.DOMquery = $; // eslint-disable-line
+
+UI.formatPriceString = function (priceInCents) {
+  return '$' + priceInCents / 100;
+};
+
+// TODO Remove these globals later. They're for debugging
+var shop;
+var cart;
+
+(function init () {
+  shop = new Shop();
+
+  shop.addItem('avocado', 100, 'Hass', 'avocados.jpg', 10);
+  cart = new Cart(shop);
+
+  var ui = new UI('items', 'basket', 'basket-details', 'checkout-button', shop, cart);
+  ui.render();
+})();

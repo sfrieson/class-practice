@@ -32,8 +32,9 @@
       <li class='item'>
         <h3 id='item.name' class='item__name'>Name</h3>
         <span id='item.price' class='item__price'>$12.99</span>
-        <p id='item.description' class='item__description'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit ab, est, possimus ipsam minus dolorem laudantium, maiores maxime sequi itaque veritatis! Repellendus sed architecto consequuntur nisi quibusdam ratione. Perspiciatis, sequi.</p>
-        <img id='item.pictureUrl' class='item__image' />
+        <p id='item.details' class='item__details'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit ab, est, possimus ipsam minus dolorem laudantium, maiores maxime sequi itaque veritatis! Repellendus sed architecto consequuntur nisi quibusdam ratione. Perspiciatis, sequi.</p>
+        <img id='item.pictureUrl' class='item__image' alt='item.name' />
+        <button class='item__add-button'>Add to cart</button>
       </li>
     </ul>
   </section>
@@ -54,12 +55,12 @@
       <li class='item'>
         <h3 id='item.name' class='item__name'>Name</h3>
         <span id='item.price' class='item__price'>$12.99</span>
-        <img id='item.pictureUrl' class='item__image' />
+        <img id='item.pictureUrl' class='item__image' alt='item.name' />
         <button class='remove-item'>Remove</button>
       </li>
     </ol>
-    <div class='basket__details'>
-      <p id='basket.getTotal' class='basket__total'></p>
+    <div id='basket-details' class='basket__details'>
+      <p id='basket.getTotal' class='basket__total'>$12.99</p>
       <p id='basket.getItemCount' class='basket__size'></p>
     </div>
     <button id="checkout-button">Checkout</button>
