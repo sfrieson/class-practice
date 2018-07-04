@@ -1,19 +1,19 @@
 /*
-Store class
+Shop class
 properties:
 - items
 - inventory
 - cart
 */
 
-function Store () {
+function Shop () {
   this.inventory = new Inventory();
-  this.items = new Set();
   this.cart = new Cart();
 }
 
-Store.prototype.addItem = function (name, quantity) {
-
+Shop.prototype.addItem = function (name, priceInCents, details, pictureUrl, quantity) {
+  var item = new Item(name, priceInCents, details, pictureUrl);
+  this.inventory.addItem(item, quantity);
 };
 
 /*
@@ -28,10 +28,10 @@ methods:
 */
 
 function Inventory () {
-  this.store = {};
+  this.storage = {};
 }
 
-Inventory.prototype.addItem = function (name, quantity) {
+Inventory.prototype.addItem = function (item, quantity) {
 
 };
 
