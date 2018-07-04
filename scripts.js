@@ -43,7 +43,7 @@ Inventory.prototype.replenish = function (quantity) {
 
 };
 
-Inventory.prototype.getItemInventory = function (name); {
+Inventory.prototype.getItemInventory = function (name) {
 
 };
 
